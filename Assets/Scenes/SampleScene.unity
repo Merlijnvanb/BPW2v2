@@ -417,13 +417,13 @@ MonoBehaviour:
     bladeCurvature: 1.05
     bladeHeight: 1.23
     bladeHeightVariance: 0.35
-    bladeWidth: 0.6
+    bladeWidth: 0.22
     bladeWidthVariance: 0.16
     windNoiseTexture: {fileID: 2800000, guid: 3e1b9fd7cd3c9c8468d36a4c81930087, type: 3}
     windTextureScale: 0.03
     windPeriod: 1.61
     windScale: 1.16
-    windAmplitude: 0.61
+    windAmplitude: 1
     windDirectionAngle: -490.8
 --- !u!4 &526051278
 Transform:
