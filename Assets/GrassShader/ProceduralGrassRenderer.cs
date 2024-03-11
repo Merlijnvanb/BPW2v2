@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-[ExecuteInEditMode]
+//[ExecuteInEditMode]
 public class ProceduralGrassRenderer : MonoBehaviour {
     [System.Serializable]
     public class GrassSettings {
@@ -20,6 +20,9 @@ public class ProceduralGrassRenderer : MonoBehaviour {
         public float windScale = 1;
         public float windAmplitude = 0;
         public float windDirectionAngle = 0;
+        public float cameraLODMin = 3;
+        public float cameraLODMax = 30;
+        public float cameraLODFactor = 1;
     }
 
     [SerializeField] private Mesh sourceMesh = default;
@@ -38,6 +41,8 @@ public class ProceduralGrassRenderer : MonoBehaviour {
     private ComputeBuffer sourceTriBuffer;
     private ComputeBuffer drawBuffer;
     private ComputeBuffer argsBuffer;
+    private ComputeShader instantiatedGrassComputeShader;
+    private Material instantiatedMaterial;
     private int idGrassKernel;
     private int dispatchSize;
     private Bounds localBounds;
@@ -57,6 +62,9 @@ public class ProceduralGrassRenderer : MonoBehaviour {
             OnDisable();
         }
         initialized = true;
+
+        instantiatedGrassComputeShader = Instantiate(grassComputeShader);
+        instantiatedMaterial = Instantiate(material);
 
         Vector3[] positions = sourceMesh.vertices;
         int[] tris = sourceMesh.triangles;
@@ -79,30 +87,32 @@ public class ProceduralGrassRenderer : MonoBehaviour {
         drawBuffer.SetCounterValue(0);
         argsBuffer = new ComputeBuffer(1, INDIRECT_ARGS_STRIDE, ComputeBufferType.IndirectArguments);
 
-        idGrassKernel = grassComputeShader.FindKernel("Main");
+        idGrassKernel = instantiatedGrassComputeShader.FindKernel("Main");
 
-        grassComputeShader.SetBuffer(idGrassKernel, "_SourceVertices", sourceVertBuffer);
-        grassComputeShader.SetBuffer(idGrassKernel, "_SourceTriangles", sourceTriBuffer);
-        grassComputeShader.SetBuffer(idGrassKernel, "_DrawTriangles", drawBuffer);
-        grassComputeShader.SetBuffer(idGrassKernel, "_IndirectArgsBuffer", argsBuffer);
-        grassComputeShader.SetInt("_NumSourceTriangles", numSourceTriangles);
-        grassComputeShader.SetInt("_MaxBladeSegments", maxBladeSegments);
-        grassComputeShader.SetFloat("_MaxBendAngle", grassSettings.maxBendAngle);
-        grassComputeShader.SetFloat("_BladeCurvature", grassSettings.bladeCurvature);
-        grassComputeShader.SetFloat("_BladeHeight", grassSettings.bladeHeight);
-        grassComputeShader.SetFloat("_BladeHeightVariance", grassSettings.bladeHeightVariance);
-        grassComputeShader.SetFloat("_BladeWidth", grassSettings.bladeWidth);
-        grassComputeShader.SetFloat("_BladeWidthVariance", grassSettings.bladeWidthVariance);
-        grassComputeShader.SetTexture(idGrassKernel, "_WindNoiseTexture", grassSettings.windNoiseTexture);
-        grassComputeShader.SetFloat("_WindTexMult", grassSettings.windTextureScale);
-        grassComputeShader.SetFloat("_WindTimeMult", grassSettings.windPeriod);
-        grassComputeShader.SetFloat("_WindPosMult", grassSettings.windScale);
-        grassComputeShader.SetFloat("_WindAmplitude", grassSettings.windAmplitude);
-        grassComputeShader.SetFloat("_WindDirectionAngle", grassSettings.windDirectionAngle);
+        instantiatedGrassComputeShader.SetBuffer(idGrassKernel, "_SourceVertices", sourceVertBuffer);
+        instantiatedGrassComputeShader.SetBuffer(idGrassKernel, "_SourceTriangles", sourceTriBuffer);
+        instantiatedGrassComputeShader.SetBuffer(idGrassKernel, "_DrawTriangles", drawBuffer);
+        instantiatedGrassComputeShader.SetBuffer(idGrassKernel, "_IndirectArgsBuffer", argsBuffer);
+        instantiatedGrassComputeShader.SetInt("_NumSourceTriangles", numSourceTriangles);
+        instantiatedGrassComputeShader.SetInt("_MaxBladeSegments", maxBladeSegments);
+        instantiatedGrassComputeShader.SetFloat("_MaxBendAngle", grassSettings.maxBendAngle);
+        instantiatedGrassComputeShader.SetFloat("_BladeCurvature", grassSettings.bladeCurvature);
+        instantiatedGrassComputeShader.SetFloat("_BladeHeight", grassSettings.bladeHeight);
+        instantiatedGrassComputeShader.SetFloat("_BladeHeightVariance", grassSettings.bladeHeightVariance);
+        instantiatedGrassComputeShader.SetFloat("_BladeWidth", grassSettings.bladeWidth);
+        instantiatedGrassComputeShader.SetFloat("_BladeWidthVariance", grassSettings.bladeWidthVariance);
+        instantiatedGrassComputeShader.SetTexture(idGrassKernel, "_WindNoiseTexture", grassSettings.windNoiseTexture);
+        instantiatedGrassComputeShader.SetFloat("_WindTexMult", grassSettings.windTextureScale);
+        instantiatedGrassComputeShader.SetFloat("_WindTimeMult", grassSettings.windPeriod);
+        instantiatedGrassComputeShader.SetFloat("_WindPosMult", grassSettings.windScale);
+        instantiatedGrassComputeShader.SetFloat("_WindAmplitude", grassSettings.windAmplitude);
+        instantiatedGrassComputeShader.SetFloat("_WindDirectionAngle", grassSettings.windDirectionAngle);
+        instantiatedGrassComputeShader.SetVector("_CameraLOD", 
+            new Vector4(grassSettings.cameraLODMin, grassSettings.cameraLODMax, Mathf.Max(0, grassSettings.cameraLODFactor), 0));
 
-        material.SetBuffer("_DrawTriangles", drawBuffer);
+        instantiatedMaterial.SetBuffer("_DrawTriangles", drawBuffer);
 
-        grassComputeShader.GetKernelThreadGroupSizes(idGrassKernel, out uint threadGroupSize, out _, out _);
+        instantiatedGrassComputeShader.GetKernelThreadGroupSizes(idGrassKernel, out uint threadGroupSize, out _, out _);
         dispatchSize = Mathf.CeilToInt((float)numSourceTriangles / threadGroupSize);
 
         localBounds = sourceMesh.bounds;
@@ -112,6 +122,13 @@ public class ProceduralGrassRenderer : MonoBehaviour {
 
     private void OnDisable() {
         if(initialized) {
+            if(Application.isPlaying) {
+                Destroy(instantiatedGrassComputeShader);
+                Destroy(instantiatedMaterial);
+            } else {
+                DestroyImmediate(instantiatedGrassComputeShader);
+                DestroyImmediate(instantiatedMaterial);
+            }
             // Release each buffer
             sourceVertBuffer.Release();
             sourceTriBuffer.Release();
@@ -150,12 +167,13 @@ public class ProceduralGrassRenderer : MonoBehaviour {
 
         Bounds bounds = TransformBounds(localBounds);
 
-        grassComputeShader.SetVector("_Time", new Vector4(0, Time.timeSinceLevelLoad, 0, 0));
-        grassComputeShader.SetMatrix("_LocalToWorld", transform.localToWorldMatrix);
+        instantiatedGrassComputeShader.SetVector("_Time", new Vector4(0, Time.timeSinceLevelLoad, 0, 0));
+        instantiatedGrassComputeShader.SetMatrix("_LocalToWorld", transform.localToWorldMatrix);
+        instantiatedGrassComputeShader.SetVector("_CameraPosition", Camera.main.transform.position);
 
-        grassComputeShader.Dispatch(idGrassKernel, dispatchSize, 1, 1);
+        instantiatedGrassComputeShader.Dispatch(idGrassKernel, dispatchSize, 1, 1);
 
-        Graphics.DrawProceduralIndirect(material, bounds, MeshTopology.Triangles, argsBuffer, 0,
+        Graphics.DrawProceduralIndirect(instantiatedMaterial, bounds, MeshTopology.Triangles, argsBuffer, 0,
             null, null, ShadowCastingMode.Off, true, gameObject.layer);
     }
 }

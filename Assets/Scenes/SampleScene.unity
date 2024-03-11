@@ -209,13 +209,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: -0, y: 0.7546756, z: -0, w: 0.6560981}
+  m_LocalPosition: {x: 0, y: 1.59, z: 0.42}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 97.994, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -413,18 +413,21 @@ MonoBehaviour:
   material: {fileID: 2100000, guid: 847bcbf72b86aa74189bcf9605be8ed1, type: 2}
   grassSettings:
     maxSegments: 5
-    maxBendAngle: 0.67
+    maxBendAngle: 0.21
     bladeCurvature: 1.05
-    bladeHeight: 1.23
-    bladeHeightVariance: 0.35
+    bladeHeight: 0.75
+    bladeHeightVariance: 0.1
     bladeWidth: 0.22
     bladeWidthVariance: 0.16
     windNoiseTexture: {fileID: 2800000, guid: 3e1b9fd7cd3c9c8468d36a4c81930087, type: 3}
     windTextureScale: 0.03
-    windPeriod: 1.61
+    windPeriod: 3.45
     windScale: 1.16
-    windAmplitude: 1
-    windDirectionAngle: -490.8
+    windAmplitude: 0.49
+    windDirectionAngle: -301.7
+    cameraLODMin: 1.08
+    cameraLODMax: 16.6
+    cameraLODFactor: 1.93
 --- !u!4 &526051278
 Transform:
   m_ObjectHideFlags: 0
@@ -435,7 +438,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 500, y: 500, z: 500}
+  m_LocalScale: {x: 300, y: 300, z: 300}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}

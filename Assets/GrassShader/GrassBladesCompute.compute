@@ -54,7 +54,19 @@ float _WindPosMult;
 float _WindAmplitude;
 float _WindDirectionAngle;
 
+float3 _CameraLOD;
+float4 _CameraPosition;
+
 float4x4 _LocalToWorld;
+
+
+int GetNumSegments(float3 positionWS) {
+    float d = distance(positionWS, _CameraPosition.xyz);
+    d = 1 - smoothstep(_CameraLOD.x, _CameraLOD.y, d);
+    d = pow(d, _CameraLOD.z);
+
+    return min(MAX_BLADE_SEGMENTS, max(1, ceil(d * _MaxBladeSegments)));
+}
 
 void GetCenterAndBasis(SourceVertex a, SourceVertex b, SourceVertex c, out float3 positionWS, out float3 normalWS, out float3x3 tsToWs) {
     float3 positionA_WS = mul(_LocalToWorld, float4(a.positionOS, 1)).xyz;
@@ -134,7 +146,7 @@ void Main(uint3 id : SV_DispatchThreadID) {
 
     float3 windAxis = GetWindAxis(positionWS, normalWS);
 
-    int numBladeSegments = min(MAX_BLADE_SEGMENTS, max(1, _MaxBladeSegments));
+    int numBladeSegments = GetNumSegments(positionWS);
 
     DrawVertex vertices[MAX_BLADE_POINTS];
 
