@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18104625, g: 0.22661902, b: 0.30728626, a: 1}
+  m_IndirectSpecularColor: {r: 0.17336749, g: 0.21671233, b: 0.29877764, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -348,13 +348,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410087039}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.85832834, y: -0.25248837, z: -0.05689547, w: 0.44304073}
+  m_LocalRotation: {x: 0.36811668, y: -0.6562314, z: 0.6061797, w: 0.25767547}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 47.039, y: -151.862, z: -134.767}
+  m_LocalEulerAnglesHint: {x: 80.163, y: -219.252, z: -91.988}
 --- !u!114 &410087042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -423,7 +423,7 @@ MonoBehaviour:
     windTextureScale: 0.03
     windPeriod: 3.45
     windScale: 1.16
-    windAmplitude: 0.49
+    windAmplitude: 1.26
     windDirectionAngle: -301.7
     cameraLODMin: 1.08
     cameraLODMax: 16.6

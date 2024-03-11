@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.2915632, g: 0.0036032598, b: 0.0072022914, a: 1}
+  m_IndirectSpecularColor: {r: 0.29156822, g: 0.0036032293, b: 0.0072022486, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -505,7 +505,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47dba2dbebe831245a57263d6c7ae2f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sourceMesh: {fileID: -4550683992047327297, guid: 1e72f3c80cdc27945b1b87158cea2993,
+  sourceMesh: {fileID: -4550683992047327297, guid: 594da5cc5fb252242b44ed356853f44b,
     type: 3}
   grassComputeShader: {fileID: 7200000, guid: ccbfddd9cf97eaf47ab88ac165de02b2, type: 3}
   material: {fileID: 2100000, guid: 847bcbf72b86aa74189bcf9605be8ed1, type: 2}
@@ -523,8 +523,8 @@ MonoBehaviour:
     windScale: 0.27
     windAmplitude: 0.29
     windDirectionAngle: 0
-    cameraLODMin: 3
-    cameraLODMax: 35
+    cameraLODMin: 30
+    cameraLODMax: 75
     cameraLODFactor: 2
 --- !u!4 &1763640077
 Transform:
