@@ -46,25 +46,18 @@ VertexOutput Vertex(uint vertexID: SV_VertexID) {
 }
 
 half4 Fragment(VertexOutput input) : SV_Target {
-    // Gather some data for the lighting algorithm
-    InputData lightingInput = (InputData)0;
-    lightingInput.positionWS = input.positionWS;
-    lightingInput.normalWS = input.normalWS; // No need to normalize, triangles share a normal
-    lightingInput.viewDirectionWS = GetViewDirectionFromPosition(input.positionWS); // Calculate the view direction
-    lightingInput.shadowCoord = CalculateShadowCoord(input.positionWS, input.positionCS);
+    float3 normal = input.normalWS;
+    
+    if(dot(normal, float3(0,1,0) < 0)) normal = -normal; // Flip the normal if it's facing the wrong way
+    
+    float light = dot(normal, GetMainLight().direction) * 0.5 + 0.5f;
 
-    // Lerp between the base and tip color based on the blade height
-    float colorLerp = input.uv;
-    float3 albedo = lerp(_BaseColor.rgb, _TipColor.rgb, input.uv);
+    //AO
+    float maxHeight = 2.0f;
+    light = (input.uv / maxHeight) * light;
+    
 
-    SurfaceData surfaceInput = (SurfaceData)0;
-    surfaceInput.albedo = albedo;
-    surfaceInput.alpha = 1;
-    surfaceInput.specular = 1;
-    surfaceInput.smoothness = 1;
-    surfaceInput.occlusion = 1;
-
-    return UniversalFragmentBlinnPhong(lightingInput, surfaceInput);
+    return lerp(_BaseColor, _TipColor, light);
 }
 
 #endif
