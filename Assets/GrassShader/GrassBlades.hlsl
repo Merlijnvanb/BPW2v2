@@ -28,12 +28,8 @@ float4 _BaseColor;
 float4 _TipColor;
 float4 _SpecularColor;
 
-half4 CalculateSpecular(float light, float specSize) {
-    if(light > (1.0-specSize)) {
-        return _SpecularColor;
-    } else {
-        return 0;
-    }
+half4 CalculateSpecular(Light light, float3 normal, float3 viewDir) {
+    return saturate(dot(normal, normalize(light.direction + viewDir)));
 }
 
 VertexOutput Vertex(uint vertexID: SV_VertexID) {
@@ -60,13 +56,15 @@ half4 Fragment(VertexOutput input) : SV_Target {
     if(dot(normal, float3(0,1,0) < 0)) normal = -normal; // Flip the normal if it's facing the wrong way
     
     float light = dot(normal, GetMainLight().direction) * 0.5 + 0.5f;
+    float3 viewDir = GetViewDirectionFromPosition(input.positionWS);
+    Light mainLight = GetMainLight();
 
     //AO
     float maxHeight = 2.0f;
     light = (input.uv / maxHeight) * light;
     
 
-    return lerp(_BaseColor, _TipColor, light) + CalculateSpecular(light, 0.55);
+    return lerp(_BaseColor, _TipColor, light) + CalculateSpecular(mainLight, normal, viewDir);
 }
 
 #endif
