@@ -26,6 +26,15 @@ struct VertexOutput {
 
 float4 _BaseColor;
 float4 _TipColor;
+float4 _SpecularColor;
+
+half4 CalculateSpecular(float light, float specSize) {
+    if(light > (1.0-specSize)) {
+        return _SpecularColor;
+    } else {
+        return 0;
+    }
+}
 
 VertexOutput Vertex(uint vertexID: SV_VertexID) {
     // Initialize the output struct
@@ -57,7 +66,7 @@ half4 Fragment(VertexOutput input) : SV_Target {
     light = (input.uv / maxHeight) * light;
     
 
-    return lerp(_BaseColor, _TipColor, light);
+    return lerp(_BaseColor, _TipColor, light) + CalculateSpecular(light, 0.55);
 }
 
 #endif

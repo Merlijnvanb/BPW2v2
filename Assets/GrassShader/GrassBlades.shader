@@ -4,6 +4,7 @@ Shader "Grass/GrassBlades"
     {
         _BaseColor("Base color", Color) = (0, 0.5, 0, 1)
         _TipColor("Tip color", Color) = (0, 1, 0, 1)
+        _SpecularColor("Specular color", Color) = (1, 1, 1, 1)
     }
     SubShader
     {
