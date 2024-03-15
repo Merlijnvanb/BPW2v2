@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.29156822, g: 0.0036032293, b: 0.0072022486, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -387,7 +387,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 0.78930813, g: 0.8146489, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.8526397, b: 0.7882353, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -511,7 +511,7 @@ MonoBehaviour:
   material: {fileID: 2100000, guid: 847bcbf72b86aa74189bcf9605be8ed1, type: 2}
   grassSettings:
     maxSegments: 5
-    maxBendAngle: 0.2
+    maxBendAngle: 0.57
     bladeCurvature: 1
     bladeHeight: 1.25
     bladeHeightVariance: 1
@@ -521,7 +521,7 @@ MonoBehaviour:
     windTextureScale: 0.13
     windPeriod: 1.27
     windScale: 0.27
-    windAmplitude: 0.28
+    windAmplitude: 0.8
     windDirectionAngle: 0
     cameraLODMin: 30
     cameraLODMax: 75
