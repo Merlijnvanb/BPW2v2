@@ -511,7 +511,7 @@ MonoBehaviour:
   material: {fileID: 2100000, guid: 847bcbf72b86aa74189bcf9605be8ed1, type: 2}
   grassSettings:
     maxSegments: 5
-    maxBendAngle: 0.57
+    maxBendAngle: 0.29
     bladeCurvature: 1
     bladeHeight: 1.25
     bladeHeightVariance: 1
@@ -521,7 +521,7 @@ MonoBehaviour:
     windTextureScale: 0.13
     windPeriod: 1.27
     windScale: 0.27
-    windAmplitude: 0.8
+    windAmplitude: 0.24
     windDirectionAngle: 0
     cameraLODMin: 30
     cameraLODMax: 75
