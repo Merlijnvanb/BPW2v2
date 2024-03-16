@@ -26,7 +26,7 @@ struct VertexOutput {
 
 float4 _BaseColor;
 float4 _TipColor;
-float4 _SpecularColor;
+float _PosterizeSteps;
 
 float CalculateSpecular(Light light, float3 normal, float3 viewDir) {
     float3 R = normalize(2 * dot(normal, light.direction) * normal - light.direction); 
@@ -68,11 +68,11 @@ half4 Fragment(VertexOutput input) : SV_Target {
     SurfaceData surfaceInput = (SurfaceData)0;
     surfaceInput.albedo = albedo;
     surfaceInput.alpha = 1;
-    surfaceInput.specular = 0;
-    surfaceInput.smoothness = 0;
+    surfaceInput.specular = 0.1;
+    surfaceInput.smoothness = 0.25;
     surfaceInput.occlusion = 1;
     
-    return UniversalFragmentPBR(lightingInput, surfaceInput);
+    return floor(UniversalFragmentPBR(lightingInput, surfaceInput) / (1 / _PosterizeSteps)) * (1 / _PosterizeSteps);
 }
 
 #endif

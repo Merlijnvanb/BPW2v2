@@ -1,0 +1,28 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ScrollInteractable : MonoBehaviour
+{
+    private bool inRange;
+
+private void Update() {
+    if(Input.GetKeyDown("Interact")) {
+        if(inRange == true) {
+            Singleton.Instance.HasGottenScroll();
+        }
+    }
+}
+
+private void OnTriggerEnter(Collider other) {
+    if(other.CompareTag("Player")) {
+        inRange = true;
+    }
+}
+
+private void OnTriggerExit(Collider other) {
+    if(other.CompareTag("Player")) {
+        inRange = false;
+    }
+}
+}
