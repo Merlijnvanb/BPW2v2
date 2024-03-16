@@ -176,6 +176,7 @@ void Main(uint3 id : SV_DispatchThreadID) {
         if(i % 2.0f == 0) tri.lightingNormalWS = normalize(cross(vertices[i + 1].positionWS-vertices[i].positionWS, vertices[i + 2].positionWS-vertices[i].positionWS));
         else tri.lightingNormalWS = normalize(cross(vertices[i].positionWS-vertices[i + 1].positionWS, vertices[i + 2].positionWS-vertices[i + 1].positionWS));
         
+        tri.lightingNormalWS = normalWS;
         tri.vertices[0] = vertices[i];
         tri.vertices[1] = vertices[i + 1];
         tri.vertices[2] = vertices[i + 2];
