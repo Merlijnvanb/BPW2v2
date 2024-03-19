@@ -7,7 +7,7 @@ public class ScrollInteractable : MonoBehaviour
     private bool inRange;
 
 private void Update() {
-    if(Input.GetKeyDown("Interact")) {
+    if(Input.GetKeyDown("e")) {
         if(inRange == true) {
             Singleton.Instance.HasGottenScroll();
         }
