@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-[ExecuteInEditMode]
+//[ExecuteInEditMode]
 public class ProceduralGrassRenderer : MonoBehaviour {
     [System.Serializable]
     public class GrassSettings {

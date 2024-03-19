@@ -2,17 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScrollInteractable : MonoBehaviour
+public class MoodSwitchInteractable : MonoBehaviour
 {
     private bool inRange;
+    private bool activated;
 
     private void Update()
     {
         if (Input.GetKeyDown("e"))
         {
-            if (inRange == true)
+            if (inRange == true && activated != true && Singleton.Instance.GetActivatedEvents() == 3)
             {
-                Singleton.Instance.HasGottenScroll();
+                activated = true;
+                Singleton.Instance.IncreaseEvents();
             }
         }
     }
