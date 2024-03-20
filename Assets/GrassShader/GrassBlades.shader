@@ -2,8 +2,8 @@ Shader "Grass/GrassBlades"
 {
     Properties
     {
-        _BaseColor("Base color", Color) = (0, 0.5, 0, 1)
-        _TipColor("Tip color", Color) = (0, 1, 0, 1)
+        [HDR] _BaseColor("Base color", Color) = (0, 0.5, 0, 1)
+        [HDR] _TipColor("Tip color", Color) = (0, 1, 0, 1)
         _PosterizeSteps("Posterization steps", Float) = 15.0
     }
     SubShader

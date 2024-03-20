@@ -72,10 +72,10 @@ half4 Fragment(VertexOutput input) : SV_Target {
     surfaceInput.albedo = albedo;
     surfaceInput.alpha = 1;
     surfaceInput.specular = 1;
-    surfaceInput.smoothness = 0.25;
+    surfaceInput.smoothness = 0.15;
     surfaceInput.occlusion = 1;
     
-    return lerp(UniversalFragmentBlinnPhong(lightingInput, surfaceInput), (floor(UniversalFragmentPBR(lightingInput, surfaceInput) / (1 / _PosterizeSteps)) * (1 / _PosterizeSteps)), colorLerp/3);
+    return lerp(UniversalFragmentBlinnPhong(lightingInput, surfaceInput), (floor(UniversalFragmentPBR(lightingInput, surfaceInput) / (1 / _PosterizeSteps)) * (1 / _PosterizeSteps)), colorLerp/3.5);
 }
 
 #endif
