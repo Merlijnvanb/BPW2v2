@@ -12,7 +12,7 @@ public class ScrollInteractable : MonoBehaviour
         {
             if (inRange == true)
             {
-                Singleton.Instance.HasGottenScroll();
+                Singleton.Instance.ReceiveScroll();
             }
         }
     }

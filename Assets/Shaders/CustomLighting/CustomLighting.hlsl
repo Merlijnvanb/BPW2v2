@@ -18,8 +18,10 @@ struct CustomLightingData
 	
 	// Surface Attributes
     float3 albedo;
+    float3 ambientColor;
     float smoothness;
     float ambientOcclusion;
+    float ambientIntensity;
 	
 	// Baked lighting
     float3 bakedGI;
@@ -54,6 +56,8 @@ float3 CalculateFresnelEffect(CustomLightingData d, Light light)
 float3 CustomGlobalIllumination(CustomLightingData d)
 {
     float3 indirectDiffuse = d.albedo * d.bakedGI * d.ambientOcclusion;
+
+    float3 ambientLight = d.ambientColor * d.ambientIntensity;
 	
     float3 reflectVector = reflect(-d.viewDirectionWS, d.normalWS);
     float fresnel = Pow4(1 - saturate(dot(d.viewDirectionWS, d.normalWS)));
@@ -61,7 +65,7 @@ float3 CustomGlobalIllumination(CustomLightingData d)
         RoughnessToPerceptualRoughness(1 - d.smoothness),
         d.ambientOcclusion) * fresnel;
 	
-    return indirectDiffuse + indirectSpecular;
+    return ambientLight + indirectDiffuse + indirectSpecular;
 }
 
 float3 CustomLightHandling(CustomLightingData d, Light light)
@@ -117,7 +121,7 @@ float3 CalculateCustomLighting(CustomLightingData d)
 }
 
 void CalculateCustomLighting_float(float3 Position, float3 Normal, float3 ViewDirection,
-	float3 Albedo, float Smoothness, float AmbientOcclusion, float EdgePower, float ShadowPower, float Strength, float CellAmount, float SpecularStrength, 
+	float3 Albedo, float3 AmbientColor, float Smoothness, float AmbientOcclusion, float EdgePower, float ShadowPower, float Strength, float CellAmount, float SpecularStrength, float AmbientIntensity, 
 	float2 LightmapUV,
 	out float3 Color)
 {
@@ -127,6 +131,7 @@ void CalculateCustomLighting_float(float3 Position, float3 Normal, float3 ViewDi
     d.normalWS = Normal;
     d.viewDirectionWS = ViewDirection;
     d.albedo = Albedo;
+    d.ambientColor = AmbientColor;
     d.smoothness = Smoothness;
     d.ambientOcclusion = AmbientOcclusion;
     d.edgePower = EdgePower;
@@ -134,6 +139,7 @@ void CalculateCustomLighting_float(float3 Position, float3 Normal, float3 ViewDi
     d.fresnelStrength = Strength;
     d.cellAmount = CellAmount;
     d.specularStrength = SpecularStrength;
+    d.ambientIntensity = AmbientIntensity;
 	
 #ifdef SHADERGRAPH_PREVIEW
 	d.shadowCoord = 0;
