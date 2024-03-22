@@ -14,7 +14,7 @@ public class MoodSwitchInteractable : MonoBehaviour
             if (inRange == true && activated != true && Singleton.Instance.GetActivatedEvents() == 3)
             {
                 activated = true;
-                Singleton.Instance.IncreaseEvents();
+                Singleton.Instance.MoodSwitch();
             }
         }
     }

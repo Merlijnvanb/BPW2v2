@@ -5,6 +5,11 @@ using UnityEngine;
 public class Singleton : MonoBehaviour
 {
     public static Singleton Instance { get; private set; }
+    public TimelineManager timeline;
+
+    public ParticleSystem particle1;
+    public ParticleSystem particle2;
+    public ParticleSystem particle3;
 
     private bool gottenScroll = false;
 
@@ -31,6 +36,7 @@ public class Singleton : MonoBehaviour
     {
         gottenScroll = true;
         Debug.Log("Scroll gotten");
+        timeline.ScrollGotten();
     }
 
     public int GetActivatedEvents()
@@ -42,10 +48,17 @@ public class Singleton : MonoBehaviour
     {
         eventsActivated++;
         Debug.Log("Events increased, count is: " + eventsActivated);
+        if (eventsActivated == 1) {timeline.Event1();
+        particle1.Play();}
+        else if (eventsActivated == 2) {timeline.Event2();
+        particle2.Play();}
+        else if (eventsActivated == 3) {timeline.Event3();
+        particle3.Play();}
     }
 
     public void MoodSwitch()
     {
         Debug.Log("Mood switch activated");
+        timeline.End();
     }
 }
